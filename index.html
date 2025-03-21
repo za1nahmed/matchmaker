@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
 
 <!--
 Author: Zain Ahmed
@@ -14,7 +14,7 @@ All rights reserved
 <body>
 
 <h1>Zain's Matchmaking</h1>
-<p>Instructions:.</p>
+<p>Instructions:Choose the best answers that best describes you to see if Zain is the one for you.</p>
 <label>Basketball is the best sport in the world.</label><br />
 	<select id="q1">
 		<option value="5">Strongly Agree</option>
@@ -25,8 +25,8 @@ All rights reserved
 	</select>
 	<br /><br />
 
-<label>Electric Vehicles are a safe car.</label><br />
-    <select id="q1">
+<label>Bear Fans are loyal.</label><br />
+    <select id="q2">
 		<option value="5">Strongly Agree</option>
 		<option value="4">Agree</option>
 		<option value="3">Neither agree nor disagree</option>
@@ -34,8 +34,8 @@ All rights reserved
 		<option value="1">Strongly Disagree</option>
 	</select>
 	<br /><br />
-<label>Chicago Bears fans are loyal.</label><br />
-	<select id="q1">
+<label>Electric vehicles are a safe car.</label><br />
+	<select id="q3">
 		<option value="5">Strongly Agree</option>
 		<option value="4">Agree</option>
 		<option value="3">Neither agree nor disagree</option>
@@ -44,8 +44,8 @@ All rights reserved
 	</select>
 	<br /><br />
 
-<label>Coffee helps everyone stay awake.</label><br />
-	<select id="q1">
+<label>No one dislikes coffee.</label><br />
+	<select id="q4">
 		<option value="5">Strongly Agree</option>
 		<option value="4">Agree</option>
 		<option value="3">Neither agree nor disagree</option>
@@ -55,17 +55,85 @@ All rights reserved
 	<br /><br />
 
 <label>TikTok isn't the same as it used to be.</label><br />
-	<select id="q1">
+	<select id="q5">
 		<option value="5">Strongly Agree</option>
 		<option value="4">Agree</option>
 		<option value="3">Neither agree nor disagree</option>
 		<option value="2">Disagree</option>
 		<option value="1">Strongly Disagree</option>
 	</select>
+	
 	<br /><br />
-
+<button onclick="calculateCompatibility()">Calculate Compatability</button>
+<p id="compatability"></p>
 <script>
 	console.log("Starting Matchmaker for the Web")
+
+function calculateCompatibility () {
+	console.log("calculateCompatibility()")
+
+	const DESIRED_RESPONSE = [
+		5, /* strongly agree */
+		2, /* diagree */
+		1, /* strongly disagree */
+		4, /* agree */
+		3, /* neither agree or disagree */
+]
+	const MAX_SCORE = 25;
+
+let question1Response = document.getElementById("q1").selectedOptions[0].value;
+let question2Response = document.getElementById("q2").selectedOptions[0].value;
+let question3Response = document.getElementById("q3").selectedOptions[0].value;
+let question4Response = document.getElementById("q4").selectedOptions[0].value;
+let question5Response = document.getElementById("q5").selectedOptions[0].value;
+
+console.log("Question 1 Answers:")
+console.log(document.getElementById("q1").selectedOptions[0].text);
+console.log(document.getElementById("q1").selectedOptions[0].value);
+console.log(question1Response);
+
+console.log("Question 2 Answers:")
+console.log(document.getElementById("q2").selectedOptions[0].text);
+console.log(document.getElementById("q2").selectedOptions[0].value);
+console.log(question2Response);
+
+console.log("Question 3 Answers:")
+console.log(document.getElementById("q3").selectedOptions[0].text);
+console.log(document.getElementById("q3").selectedOptions[0].value);
+console.log(question3Response);
+
+console.log("Question 4 Answers:")
+console.log(document.getElementById("q4").selectedOptions[0].text);
+console.log(document.getElementById("q4").selectedOptions[0].value);
+console.log(question4Response);
+
+console.log("Question 5 Answers:")
+console.log(document.getElementById("q5").selectedOptions[0].text);
+console.log(document.getElementById("q5").selectedOptions[0].value);
+console.log(question5Response);
+
+let question1Compatability = 5 - Math.abs(question1Response - DESIRED_RESPONSE[0]);
+let question2Compatability = 5 - Math.abs(question2Response - DESIRED_RESPONSE[1]);
+let question3Compatability = 5 - Math.abs(question3Response - DESIRED_RESPONSE[2]);
+let question4Compatability = 5 - Math.abs(question4Response - DESIRED_RESPONSE[3]);
+let question5Compatability = 5 - Math.abs(question5Response - DESIRED_RESPONSE[4]);
+
+console.log("c1="+question1Compatability);
+console.log("c2="+question2Compatability);
+console.log("c3="+question3Compatability);
+console.log("c4="+question4Compatability);
+console.log("c5="+question5Compatability);
+
+
+let totalCompatibility =question1Compatability + question2Compatability + question3Compatability + question4Compatability + question5Compatability;
+
+totalCompatibility *= 100 / MAX_SCORE;
+totalCompatibility = Math.round(totalCompatibility);
+console.log("tc="+ totalCompatibility);
+
+document.getElementById("compatability").innerHTML = "Your compatability is..." + totalCompatibility;
+}	
+
 </script>
 
 
