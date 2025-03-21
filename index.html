@@ -6,6 +6,7 @@ Project Matchmaker for the Web
 All rights reserved 
 -->
 
+
 <head>
     <meta charset="UTF-8">
     <title>Matchmaker</title>
@@ -15,113 +16,149 @@ All rights reserved
 <h1>Zain's Matchmaking</h1>
 <p>Instructions: Choose the best answers that best describe you to see if Zain is the one for you.</p>
 
-<label>Basketball is the best sport in the world.</label><br />
-<select id="q1">
-    <option value="">-- Select --</option>
-    <option value="5">Strongly Agree</option>
-    <option value="4">Agree</option>
-    <option value="3">Neither agree nor disagree</option>
-    <option value="2">Disagree</option>
-    <option value="1">Strongly Disagree</option>
-</select>
-<p id="q1-score"></p>
-<br />
 
-<label>Bear Fans are loyal.</label><br />
-<select id="q2">
-    <option value="">-- Select --</option>
-    <option value="5">Strongly Agree</option>
-    <option value="4">Agree</option>
-    <option value="3">Neither agree nor disagree</option>
-    <option value="2">Disagree</option>
-    <option value="1">Strongly Disagree</option>
-</select>
-<p id="q2-score"></p>
-<br />
+<div>
+    <label>Basketball is the best sport in the world.</label><br />
+    <select id="q1">
+        <option value="">-- Select --</option>
+        <option value="5">Strongly Agree</option>
+        <option value="4">Agree</option>
+        <option value="3">Neither agree nor disagree</option>
+        <option value="2">Disagree</option>
+        <option value="1">Strongly Disagree</option>
+    </select>
+    <span class="error" id="q1-error"></span>
+    <p id="q1-score"></p>
+</div>
 
-<label>Electric vehicles are safe cars.</label><br />
-<select id="q3">
-    <option value="">-- Select --</option>
-    <option value="5">Strongly Agree</option>
-    <option value="4">Agree</option>
-    <option value="3">Neither agree nor disagree</option>
-    <option value="2">Disagree</option>
-    <option value="1">Strongly Disagree</option>
-</select>
-<p id="q3-score"></p>
-<br />
+<div>
+    <label>Bear Fans are loyal.</label><br />
+    <select id="q2">
+        <option value="">-- Select --</option>
+        <option value="5">Strongly Agree</option>
+        <option value="4">Agree</option>
+        <option value="3">Neither agree nor disagree</option>
+        <option value="2">Disagree</option>
+        <option value="1">Strongly Disagree</option>
+    </select>
+    <span class="error" id="q2-error"></span>
+    <p id="q2-score"></p>
+</div>
 
-<label>No one dislikes coffee.</label><br />
-<select id="q4">
-    <option value="">-- Select --</option>
-    <option value="5">Strongly Agree</option>
-    <option value="4">Agree</option>
-    <option value="3">Neither agree nor disagree</option>
-    <option value="2">Disagree</option>
-    <option value="1">Strongly Disagree</option>
-</select>
-<p id="q4-score"></p>
-<br />
+<div>
+    <label>Electric vehicles are safe cars.</label><br />
+    <select id="q3">
+        <option value="">-- Select --</option>
+        <option value="5">Strongly Agree</option>
+        <option value="4">Agree</option>
+        <option value="3">Neither agree nor disagree</option>
+        <option value="2">Disagree</option>
+        <option value="1">Strongly Disagree</option>
+    </select>
+    <span class="error" id="q3-error"></span>
+    <p id="q3-score"></p>
+</div>
 
-<label>TikTok isn't the same as it used to be.</label><br />
-<select id="q5">
-    <option value="">-- Select --</option>
-    <option value="5">Strongly Agree</option>
-    <option value="4">Agree</option>
-    <option value="3">Neither agree nor disagree</option>
-    <option value="2">Disagree</option>
-    <option value="1">Strongly Disagree</option>
-</select>
-<p id="q5-score"></p>
-<br />
+<div>
+    <label>No one dislikes coffee.</label><br />
+    <select id="q4">
+        <option value="">-- Select --</option>
+        <option value="5">Strongly Agree</option>
+        <option value="4">Agree</option>
+        <option value="3">Neither agree nor disagree</option>
+        <option value="2">Disagree</option>
+        <option value="1">Strongly Disagree</option>
+    </select>
+    <span class="error" id="q4-error"></span>
+    <p id="q4-score"></p>
+</div>
+
+<div>
+    <label>TikTok isn't the same as it used to be.</label><br />
+    <select id="q5">
+        <option value="">-- Select --</option>
+        <option value="5">Strongly Agree</option>
+        <option value="4">Agree</option>
+        <option value="3">Neither agree nor disagree</option>
+        <option value="2">Disagree</option>
+        <option value="1">Strongly Disagree</option>
+    </select>
+    <span class="error" id="q5-error"></span>
+    <p id="q5-score"></p>
+</div>
 
 <button onclick="calculateCompatibility()">Calculate Compatibility</button>
 <p id="compatibility"></p>
 <p id="closing-remark"></p>
 
 <script>
-function calculateCompatibility() {
-    const DESIRED_RESPONSE = [5, 2, 1, 4, 3]; // Ideal answers
-    const MAX_SCORE = 25; // Max possible score
-    let responses = [];
 
-    // Collect responses and validate input
-    for (let i = 1; i <= 5; i++) {
+const DESIRED_RESPONSE = [5, 2, 1, 4, 3]; // Ideal answers
+const MAX_SCORE = 25; // Max possible score
+const TOTAL_QUESTIONS = 5;
+
+
+function validate() {
+    let valid = true;
+    for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
         let selectedValue = document.getElementById("q" + i).value;
+        let errorSpan = document.getElementById("q" + i + "-error");
+
         if (selectedValue === "") {
-            alert("Please answer all questions before calculating compatibility.");
-            return; // Stop function if any question is unanswered
+            errorSpan.innerText = "Please select an answer.";
+            valid = false;
+        } else {
+            errorSpan.innerText = ""; // Clear error message if valid
         }
-        responses.push(Number(selectedValue)); // Convert response to a number
+    }
+    return valid;
+}
+
+
+function calculateCompatibility() {
+    if (!validate()) {
+        return; 
     }
 
+    let responses = [];
     let totalScore = 0;
-    
-    // Calculate and display individual question scores
-    for (let i = 0; i < 5; i++) {
-        let questionCompatibility = 5 - Math.abs(responses[i] - DESIRED_RESPONSE[i]);
+
+
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        let selectedValue = Number(document.getElementById("q" + (i + 1)).value);
+        let questionCompatibility = 5 - Math.abs(selectedValue - DESIRED_RESPONSE[i]);
+
         document.getElementById(`q${i+1}-score`).innerText = `Score: ${questionCompatibility}/5`;
+        responses.push(selectedValue);
         totalScore += questionCompatibility;
     }
 
-    // Calculate overall percentage
+    
     let percentage = Math.round((totalScore / MAX_SCORE) * 100);
     document.getElementById("compatibility").innerText = `Your compatibility is: ${percentage}%`;
 
-    // Generate a closing remark
+  
     let remark = "";
     if (percentage >= 80) {
         remark = "Wow! You're a perfect match!";
     } else if (percentage >= 60) {
         remark = "Pretty good! You and I have some common ground.";
     } else if (percentage >= 40) {
-        remark = "Not bad, but I'm willing to try!";
+        remark = "Not bad, but I'm willing to give us a try.";
     } else {
         remark = "Oof, we might be opposites!";
     }
     document.getElementById("closing-remark").innerText = remark;
 }
 </script>
+
+<style>
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+</style>
 
 </body>
 </html>
